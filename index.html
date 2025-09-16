@@ -133,7 +133,7 @@
         .project-card {
             background: rgba(255, 255, 255, 0.05); border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.1);
             transform-style: preserve-3d; opacity: 0;
-            /* FIX: Default transition is only for box-shadow, NOT transform */
+            /* FIX: Default transition doesn't include transform to prevent conflict */
             transition: box-shadow 0.3s ease;
         }
         .project-card:hover { box-shadow: 0 20px 30px rgba(0, 0, 0, 0.3); border-color: var(--primary); }
@@ -398,7 +398,10 @@
                     const easedProgress = Math.pow(progress, 2);
                     const opacity = Math.min(1, progress * 4);
                     
-                    allProjectCards.forEach(p => { p.style.transition = 'opacity 0.2s linear'; p.style.opacity = opacity; });
+                    allProjectCards.forEach(p => {
+                        p.style.transition = 'none'; // FIX: Remove transition during scroll animation
+                        p.style.opacity = opacity;
+                    });
                     
                     allProjectCards[0].style.transform = `translateX(${-50 * (1 - easedProgress)}%) translateY(${-120 * (1 - Math.pow(easedProgress, 1.5))}%) rotate(${-20 * (1 - easedProgress)}deg)`;
                     allProjectCards[1].style.transform = `translateY(${120 * (1 - easedProgress)}%)`;
@@ -412,6 +415,7 @@
                     allProjectCards.forEach(p => {
                         p.style.opacity = 1;
                         p.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+                        // FIX: Restore transition for hover effect
                         p.style.transition = 'box-shadow 0.3s ease, transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
                     });
                 }
