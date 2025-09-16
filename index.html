@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dhruv Patel | Ultimate Portfolio</title>
+    <title>Dhruv Patel | The Definitive Portfolio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -19,16 +19,8 @@
             --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        html {
-            scroll-behavior: smooth;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body {
             font-family: 'Montserrat', sans-serif;
             color: var(--light);
@@ -36,39 +28,33 @@
             line-height: 1.6;
             overflow-x: hidden;
         }
-        
-        h1, h2, h3, h4, h5 {
-            font-family: 'Raleway', sans-serif;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            letter-spacing: 1px;
+        h1, h2, h3, h4, h5 { font-family: 'Raleway', sans-serif; font-weight: 700; margin-bottom: 1.5rem; letter-spacing: 1px; }
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        /* Side Navigation - RESTORED */
+        .side-nav {
+            position: fixed; top: 50%; right: 30px; transform: translateY(-50%);
+            z-index: 1001; display: flex; flex-direction: column; gap: 15px;
+            opacity: 0; visibility: hidden; transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
         }
-        
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+        .side-nav.visible { opacity: 1; visibility: visible; }
+        .side-nav-link { text-decoration: none; position: relative; display: flex; align-items: center; justify-content: flex-end; }
+        .side-nav-dot { width: 12px; height: 12px; background-color: var(--gray); border-radius: 50%; cursor: pointer; transition: all 0.3s ease; }
+        .side-nav-link:hover .side-nav-dot, .side-nav-link.active .side-nav-dot { background-color: var(--primary); transform: scale(1.4); }
+        .side-nav-tooltip {
+            position: absolute; right: 25px; background-color: var(--primary); color: var(--light);
+            padding: 5px 12px; border-radius: 5px; font-size: 0.9rem; white-space: nowrap;
+            opacity: 0; transform: translateX(10px); transition: opacity 0.3s ease, transform 0.3s ease; pointer-events: none;
         }
+        .side-nav-link:hover .side-nav-tooltip { opacity: 1; transform: translateX(0); }
 
         /* Navigation */
         nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            padding: 20px 0;
-            transition: all 0.3s ease-in-out;
-            backdrop-filter: blur(10px);
-            background: rgba(15, 23, 42, 0.8);
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; padding: 20px 0;
+            transition: all 0.3s ease-in-out; backdrop-filter: blur(10px); background: rgba(15, 23, 42, 0.8);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-        nav.scrolled {
-            padding: 10px 0;
-            background: rgba(15, 23, 42, 0.95);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-        }
+        nav.scrolled { padding: 10px 0; background: rgba(15, 23, 42, 0.95); box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1); }
         .nav-container { display: flex; justify-content: space-between; align-items: center; }
         .logo { font-size: 1.8rem; font-weight: 700; color: var(--light); text-decoration: none; }
         .logo span { color: var(--primary); }
@@ -94,77 +80,71 @@
         .btn-outline { background: transparent; color: var(--primary); margin-left: 15px; }
         .btn-outline:hover { background: var(--primary); color: white; }
 
-        /* 3D Cube - RESTORED */
+        /* 3D Cube */
         .cube-container { width: 250px; height: 250px; position: relative; transform-style: preserve-3d; animation: rotate 20s infinite linear; }
         .cube-face { position: absolute; width: 250px; height: 250px; background: rgba(37, 99, 235, 0.1); border: 2px solid rgba(255, 255, 255, 0.2); display: flex; align-items: center; justify-content: center; font-size: 3rem; color: white; backdrop-filter: blur(5px); }
-        .front { transform: translateZ(125px); }
-        .back { transform: translateZ(-125px) rotateY(180deg); }
-        .right { transform: rotateY(90deg) translateZ(125px); }
-        .left { transform: rotateY(-90deg) translateZ(125px); }
-        .top { transform: rotateX(90deg) translateZ(125px); }
-        .bottom { transform: rotateX(-90deg) translateZ(125px); }
+        .front { transform: translateZ(125px); } .back { transform: translateZ(-125px) rotateY(180deg); } .right { transform: rotateY(90deg) translateZ(125px); } .left { transform: rotateY(-90deg) translateZ(125px); } .top { transform: rotateX(90deg) translateZ(125px); } .bottom { transform: rotateX(-90deg) translateZ(125px); }
         @keyframes rotate { from { transform: rotateX(0) rotateY(0); } to { transform: rotateX(360deg) rotateY(360deg); } }
         @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
         /* Section Styles */
-        section { padding: 120px 0; position: relative; background-color: var(--dark); z-index: 1; }
+        section { padding: 120px 0; position: relative; background-color: var(--dark); z-index: 1; overflow: hidden; }
         .section-title { text-align: center; margin-bottom: 60px; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
-        .section-title.visible { opacity: 1; transform: translateY(0); }
+        .section-title.is-visible { opacity: 1; transform: translateY(0); }
         .section-title h2 { font-size: 2.5rem; position: relative; display: inline-block; padding-bottom: 15px; }
         .section-title h2:after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 80px; height: 3px; background: linear-gradient(to right, var(--primary), var(--secondary)); }
 
+        /* Decorative Side Blobs - RESTORED */
+        @media (min-width: 1400px) {
+            section::before, section::after {
+                content: ''; position: absolute; top: 50%; width: 200px; height: 200px;
+                background: linear-gradient(45deg, var(--primary), var(--secondary));
+                opacity: 0; transform: translateY(-50%) scale(0.5) rotate(0deg);
+                transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: -1;
+            }
+            section::before { left: -100px; border-radius: 45% 55% 70% 30% / 30% 60% 40% 70%; }
+            section::after { right: -100px; border-radius: 60% 40% 30% 70% / 70% 30% 70% 30%; }
+            section.is-visible::before, section.is-visible::after { opacity: 0.1; transform: translateY(-50%) scale(1) rotate(180deg); }
+        }
+        
         /* About Section */
         .about-content { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
         .about-image img { width: 100%; border-radius: 10px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); }
 
-        /* Experience Section - NEW ANIMATION */
+        /* Experience Section (Compressive Timeline) */
         .timeline { position: relative; max-width: 1200px; margin: 0 auto; --timeline-initial-gap: 150px; }
         .timeline:after { content: ''; position: absolute; width: 6px; background: linear-gradient(to bottom, var(--primary), var(--secondary)); top: 0; bottom: 0; left: 50%; margin-left: -3px; border-radius: 10px; }
         .timeline-item {
-            padding: 10px 40px; position: relative; width: 50%;
-            opacity: 0;
-            /* Start transformed by the initial gap */
+            padding: 10px 40px; position: relative; width: 50%; opacity: 0;
             transform: translateY(var(--timeline-initial-gap));
-            /* Transition for reveal and compression */
             transition: opacity 0.6s ease-out, transform 0.8s cubic-bezier(0.2, 0.9, 0.3, 1);
         }
         .timeline-item.visible { opacity: 1; transform: translateY(0); }
-        .timeline-item:nth-child(odd) { left: 0; }
-        .timeline-item:nth-child(even) { left: 50%; }
+        .timeline-item:nth-child(odd) { left: 0; } .timeline-item:nth-child(even) { left: 50%; }
         .timeline-content { padding: 20px 30px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 10px; border-left: 4px solid var(--primary); transition: transform 0.3s ease, box-shadow 0.3s ease; }
         .timeline-content:hover { transform: scale(1.03); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
         .timeline-date { font-weight: 600; color: var(--primary); margin-bottom: 10px; }
         .timeline-title { font-size: 1.4rem; margin-bottom: 10px; }
         
-        /* Projects Section - NEW PINNING & SCROLL ANIMATION */
-        #projects { padding: 0; height: 300vh; /* Runway for scroll animation */ }
-        .projects-sticky-container {
-            height: 100vh; width: 100%; position: sticky; top: 0;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            overflow: hidden;
-        }
+        /* Projects Section (Scroll-Pinned Animation) */
+        #projects { padding: 0; height: 300vh; }
+        .projects-sticky-container { height: 100vh; width: 100%; position: sticky; top: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; width: 100%; max-width: 1200px; }
         .project-card {
-            background: rgba(255, 255, 255, 0.05); border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transform-style: preserve-3d; /* For 3D tilt */
-            transition: box-shadow 0.3s ease; /* Transition for hover effect */
-            opacity: 0; /* Initially hidden for animation */
+            background: rgba(255, 255, 255, 0.05); border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.1);
+            transform-style: preserve-3d; transition: box-shadow 0.3s ease; opacity: 0;
         }
         .project-card:hover { box-shadow: 0 20px 30px rgba(0, 0, 0, 0.3); border-color: var(--primary); }
-        .project-content { padding: 25px; }
-        .project-title { font-size: 1.4rem; color: var(--primary); }
+        .project-content { padding: 25px; } .project-title { font-size: 1.4rem; color: var(--primary); }
         
-        /* Leadership Section - NEW STAGGERED ANIMATION */
+        /* Leadership Section (Staggered Animation) */
         .leadership-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
         .leadership-card {
-            background: rgba(255, 255, 255, 0.05); border-radius: 15px; padding: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05); border-radius: 15px; padding: 25px; border: 1px solid rgba(255, 255, 255, 0.1);
             transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.5s, opacity 0.5s;
-            opacity: 0;
-            transform: scale(0.8);
+            opacity: 0; transform: scale(0.8);
         }
-        .leadership-card.visible { opacity: 1; transform: scale(1); }
+        .leadership-card.is-visible { opacity: 1; transform: scale(1); }
         .leadership-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2); border-color: var(--secondary); }
         .leadership-icon { font-size: 2.5rem; color: var(--secondary); margin-bottom: 15px; }
 
@@ -184,11 +164,9 @@
         .footer-links a:hover { color: var(--primary); }
         
         /* Media Queries */
-        @media (max-width: 1200px) {
-            .hero .container { flex-direction: column; text-align: center; }
-            .cube-container { display: none; }
-        }
+        @media (max-width: 1200px) { .hero .container { flex-direction: column; text-align: center; } .cube-container { display: none; } }
         @media (max-width: 992px) {
+            .side-nav { display: none; }
             .about-content { grid-template-columns: 1fr; }
             .timeline:after { left: 31px; }
             .timeline-item { width: 100%; padding-left: 70px; padding-right: 25px; }
@@ -201,14 +179,21 @@
             .nav-links { position: fixed; top: 70px; left: -100%; width: 100%; height: calc(100vh - 70px); background: var(--dark); flex-direction: column; align-items: center; justify-content: center; transition: var(--transition); }
             .nav-links.active { left: 0; }
             .nav-links li { margin: 15px 0; }
-            .menu-btn { display: block; }
-            .hero h1 { font-size: 2.5rem; }
+            .menu-btn { display: block; } .hero h1 { font-size: 2.5rem; }
             .btn { display: block; margin-bottom: 15px; text-align: center; }
             .btn-outline { margin-left: 0; }
         }
     </style>
 </head>
 <body>
+    <div class="side-nav" id="side-nav">
+        <a href="#about" class="side-nav-link" data-section="about"><span class="side-nav-tooltip">About</span><div class="side-nav-dot"></div></a>
+        <a href="#experience" class="side-nav-link" data-section="experience"><span class="side-nav-tooltip">Experience</span><div class="side-nav-dot"></div></a>
+        <a href="#projects" class="side-nav-link" data-section="projects"><span class="side-nav-tooltip">Projects</span><div class="side-nav-dot"></div></a>
+        <a href="#leadership" class="side-nav-link" data-section="leadership"><span class="side-nav-tooltip">Leadership</span><div class="side-nav-dot"></div></a>
+        <a href="#contact" class="side-nav-link" data-section="contact"><span class="side-nav-tooltip">Contact</span><div class="side-nav-dot"></div></a>
+    </div>
+
     <nav id="navbar">
         <div class="container nav-container">
             <a href="#" class="logo">Dhruv<span>Patel</span></a>
@@ -267,34 +252,10 @@
         <div class="container">
             <div class="section-title"><h2>Professional Experience</h2></div>
             <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <div class="timeline-date">Jan 2025 - Present</div>
-                        <h3 class="timeline-title">Undergraduate Data Science Researcher</h3>
-                        <p>The Data Mine (Allison Transmission) – Purdue University. Working on warranty claim correlation.</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <div class="timeline-date">Aug 2024 - Dec 2024</div>
-                        <h3 class="timeline-title">Undergraduate Data Science Researcher</h3>
-                        <p>The Data Mine (Allison Transmission) – Purdue University. Developed a vehicle clustering model.</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <div class="timeline-date">Sept 2023 - Nov 2023</div>
-                        <h3 class="timeline-title">Space Research Internship</h3>
-                        <p>Galamad Aerospace (Singapore). Researched solar capabilities for a new satellite using Python and LaTeX.</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <div class="timeline-date">Web Development Intern</div>
-                        <h3 class="timeline-title">Oculotronics Technology Private Limited</h3>
-                        <p>Developed a new real-time back end using MySQL, increasing firm efficiency and security.</p>
-                    </div>
-                </div>
+                <div class="timeline-item"><div class="timeline-content"><div class="timeline-date">Jan 2025 - Present</div><h3 class="timeline-title">Undergraduate Data Science Researcher</h3><p>The Data Mine (Allison Transmission) – Purdue University. Working on warranty claim correlation.</p></div></div>
+                <div class="timeline-item"><div class="timeline-content"><div class="timeline-date">Aug 2024 - Dec 2024</div><h3 class="timeline-title">Undergraduate Data Science Researcher</h3><p>The Data Mine (Allison Transmission) – Purdue University. Developed a vehicle clustering model.</p></div></div>
+                <div class="timeline-item"><div class="timeline-content"><div class="timeline-date">Sept 2023 - Nov 2023</div><h3 class="timeline-title">Space Research Internship</h3><p>Galamad Aerospace (Singapore). Researched solar capabilities for a new satellite using Python and LaTeX.</p></div></div>
+                <div class="timeline-item"><div class="timeline-content"><div class="timeline-date">Web Development Intern</div><h3 class="timeline-title">Oculotronics Technology Private Limited</h3><p>Developed a new real-time back end using MySQL, increasing firm efficiency and security.</p></div></div>
             </div>
         </div>
     </section>
@@ -303,24 +264,9 @@
         <div class="projects-sticky-container">
             <div class="section-title"><h2>Projects</h2></div>
             <div class="projects-grid">
-                <div class="project-card" id="project-1">
-                    <div class="project-content">
-                        <h3 class="project-title">Social Media Platform (Java)</h3>
-                        <p>Collaborated with a team of 4 members to develop a comprehensive social media application based on Java.</p>
-                    </div>
-                </div>
-                <div class="project-card" id="project-2">
-                    <div class="project-content">
-                        <h3 class="project-title">Warranty Correlation System</h3>
-                        <p>Developed a full-stack Python application using Tkinter for warranty claim analysis and statistical trend finding.</p>
-                    </div>
-                </div>
-                <div class="project-card" id="project-3">
-                    <div class="project-content">
-                        <h3 class="project-title">Vehicle Clustering Model</h3>
-                        <p>Developed a machine learning model for vehicle clustering using geospatial data with MovingPandas and NetworkX.</p>
-                    </div>
-                </div>
+                <div class="project-card"><div class="project-content"><h3 class="project-title">Social Media Platform (Java)</h3><p>Collaborated with a team of 4 members to develop a comprehensive social media application based on Java.</p></div></div>
+                <div class="project-card"><div class="project-content"><h3 class="project-title">Warranty Correlation System</h3><p>Developed a full-stack Python application using Tkinter for warranty claim analysis and statistical trend finding.</p></div></div>
+                <div class="project-card"><div class="project-content"><h3 class="project-title">Vehicle Clustering Model</h3><p>Developed a machine learning model for vehicle clustering using geospatial data with MovingPandas and NetworkX.</p></div></div>
             </div>
         </div>
     </section>
@@ -329,21 +275,9 @@
         <div class="container">
             <div class="section-title"><h2>Leadership & Involvement</h2></div>
             <div class="leadership-grid">
-                <div class="leadership-card">
-                    <div class="leadership-icon"><i class="fas fa-trophy"></i></div>
-                    <h3>Semifinalist in All India Melbourne Competition</h3>
-                    <p>Led a team in a case competition, proposing a digital marketing startup, ranked top 24 out of 250+ teams.</p>
-                </div>
-                <div class="leadership-card">
-                    <div class="leadership-icon"><i class="fas fa-anchor"></i></div>
-                    <h3>Leading Cadet: Sea Cadet Corps India</h3>
-                    <p>Trained as a seaman for the Indian Navy, leading a contingent of cadets, demonstrating discipline and leadership.</p>
-                </div>
-                <div class="leadership-card">
-                    <div class="leadership-icon"><i class="fas fa-globe"></i></div>
-                    <h3>Best Delegate: Model United Nations</h3>
-                    <p>Recognized as the Best Delegate of the DISEC committee while representing the USA.</p>
-                </div>
+                <div class="leadership-card"><div class="leadership-icon"><i class="fas fa-trophy"></i></div><h3>Semifinalist in All India Melbourne Competition</h3><p>Led a team in a case competition, proposing a digital marketing startup, ranked top 24 out of 250+ teams.</p></div>
+                <div class="leadership-card"><div class="leadership-icon"><i class="fas fa-anchor"></i></div><h3>Leading Cadet: Sea Cadet Corps India</h3><p>Trained as a seaman for the Indian Navy, leading a contingent of cadets, demonstrating discipline and leadership.</p></div>
+                <div class="leadership-card"><div class="leadership-icon"><i class="fas fa-globe"></i></div><h3>Best Delegate: Model United Nations</h3><p>Recognized as the Best Delegate of the DISEC committee while representing the USA.</p></div>
             </div>
         </div>
     </section>
@@ -365,10 +299,7 @@
     <footer>
         <div class="container">
             <ul class="footer-links">
-                <li><a href="#about">About</a></li>
-                <li><a href="#experience">Experience</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#leadership">Leadership</a></li>
+                <li><a href="#about">About</a></li> <li><a href="#experience">Experience</a></li> <li><a href="#projects">Projects</a></li> <li><a href="#leadership">Leadership</a></li>
             </ul>
             <p>&copy; 2024 Dhruv Patel. All Rights Reserved.</p>
         </div>
@@ -378,8 +309,20 @@
         // Initialize Particles.js
         particlesJS('particles-js', {"particles":{"number":{"value":50,"density":{"enable":true,"value_area":800}},"color":{"value":"#ffffff"},"shape":{"type":"circle"},"opacity":{"value":0.5,"random":true},"size":{"value":3,"random":true},"line_linked":{"enable":true,"distance":150,"color":"#ffffff","opacity":0.4,"width":1},"move":{"enable":true,"speed":2,"direction":"none","random":true,"straight":false,"out_mode":"out","bounce":false}},"interactivity":{"detect_on":"canvas","events":{"onhover":{"enable":true,"mode":"repulse"},"onclick":{"enable":true,"mode":"push"},"resize":true}},"retina_detect":true});
 
-        // Project Card 3D Tilt Effect - RESTORED
-        document.querySelectorAll('.project-card').forEach(card => {
+        // --- DOM Element Cache ---
+        const navbar = document.getElementById('navbar');
+        const heroSection = document.getElementById('hero');
+        const sideNav = document.getElementById('side-nav');
+        const sideNavLinks = document.querySelectorAll('.side-nav-link');
+        const sections = document.querySelectorAll('section');
+        const experienceSection = document.getElementById('experience');
+        const timelineItems = document.querySelectorAll('.timeline-item');
+        const projectsSection = document.getElementById('projects');
+        const projectCards = document.querySelectorAll('.project-card');
+        const leadershipCards = document.querySelectorAll('.leadership-card');
+        
+        // --- Project Card 3D Tilt Effect ---
+        projectCards.forEach(card => {
             card.addEventListener('mousemove', function(e) {
                 const rect = this.getBoundingClientRect();
                 const x = e.clientX - rect.left;
@@ -393,99 +336,86 @@
             });
         });
 
-        // --- Master Scroll Handler ---
+        // --- Intersection Observer for General Animations (Titles, Blobs, Leadership) ---
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
+                const target = entry.target;
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
+                    target.classList.add('is-visible');
+                    // Stagger leadership cards
+                    if (target.classList.contains('leadership-card')) {
+                        const delay = Array.from(leadershipCards).indexOf(target) * 150;
+                        target.style.transitionDelay = `${delay}ms`;
+                    }
                 }
             });
-        }, { threshold: 0.1 });
+        }, { threshold: 0.2 });
 
-        // Observe titles and leadership cards
-        document.querySelectorAll('.section-title, .leadership-card').forEach(el => observer.observe(el));
+        document.querySelectorAll('.section-title, .leadership-card, section').forEach(el => observer.observe(el));
         
-        const experienceSection = document.getElementById('experience');
-        const timelineItems = document.querySelectorAll('.timeline-item');
-        const projectsSection = document.getElementById('projects');
-        const projectCards = document.querySelectorAll('.project-card');
-
+        // --- Master Scroll Handler for Complex Animations ---
         function handleAdvancedScroll() {
             const scrollY = window.scrollY;
             const wh = window.innerHeight;
+
+            // Navbar scroll effect
+            navbar.classList.toggle('scrolled', scrollY > 50);
+
+            // Side Nav visibility
+            sideNav.classList.toggle('visible', scrollY > heroSection.offsetHeight * 0.7);
+
+            // Side Nav active state
+            let currentSection = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - wh / 2) {
+                    currentSection = section.id;
+                }
+            });
+            sideNavLinks.forEach(link => {
+                link.classList.toggle('active', link.dataset.section === currentSection);
+            });
 
             // --- Experience Section Compressing Timeline ---
             const expTop = experienceSection.offsetTop;
             const expHeight = experienceSection.offsetHeight;
             if (scrollY > expTop - wh && scrollY < expTop + expHeight) {
-                // How far we've scrolled past the start of the section (from 0 to 1)
                 const scrollProgress = Math.max(0, Math.min(1, (scrollY - (expTop - wh * 0.8)) / (expHeight * 0.6)));
-                
                 timelineItems.forEach((item, index) => {
-                    const revealPoint = index * 0.2; // Staggered reveal
-                    if (scrollProgress > revealPoint) {
-                        item.classList.add('visible');
-                    }
-                    
-                    // Start compressing the gap after 40% of the way through the animation
+                    if (scrollProgress > index * 0.2) item.classList.add('visible');
                     const compressionStart = 0.4;
                     const compressionFactor = Math.max(0, (scrollProgress - compressionStart) / (1 - compressionStart));
-                    const currentGap = 150 - (150 * compressionFactor);
-                    item.style.setProperty('--timeline-initial-gap', `${currentGap}px`);
+                    item.style.setProperty('--timeline-initial-gap', `${150 - (150 * compressionFactor)}px`);
                 });
             }
 
             // --- Projects Section Pinning Animation ---
-            const isMobile = window.innerWidth <= 992;
-            if (!isMobile) {
+            if (window.innerWidth > 992) { // Only run this complex animation on desktop
                 const projTop = projectsSection.offsetTop;
                 const projScrollDuration = projectsSection.offsetHeight - wh;
-
                 if (scrollY >= projTop && scrollY <= projTop + projScrollDuration) {
                     const progress = (scrollY - projTop) / projScrollDuration;
-                    const easedProgress = Math.pow(progress, 2); // Ease-in for a smoother start
-                    
+                    const easedProgress = Math.pow(progress, 2);
                     const opacity = Math.min(1, progress * 4);
                     
-                    // Card 1: Top-left curve
-                    const p1x = -50 * (1 - easedProgress);
-                    const p1y = -120 * (1 - Math.pow(easedProgress, 1.5));
-                    const p1r = -20 * (1 - easedProgress);
-                    projectCards[0].style.transform = `translateX(${p1x}%) translateY(${p1y}%) rotate(${p1r}deg)`;
-                    
-                    // Card 2: Bottom-up
-                    const p2y = 120 * (1 - easedProgress);
-                    projectCards[1].style.transform = `translateY(${p2y}%)`;
-
-                    // Card 3: Top-right curve
-                    const p3x = 50 * (1 - easedProgress);
-                    const p3y = -120 * (1 - Math.pow(easedProgress, 1.5));
-                    const p3r = 20 * (1 - easedProgress);
-                    projectCards[2].style.transform = `translateX(${p3x}%) translateY(${p3y}%) rotate(${p3r}deg)`;
-
+                    projectCards[0].style.transform = `translateX(${-50 * (1 - easedProgress)}%) translateY(${-120 * (1 - Math.pow(easedProgress, 1.5))}%) rotate(${-20 * (1 - easedProgress)}deg)`;
+                    projectCards[1].style.transform = `translateY(${120 * (1 - easedProgress)}%)`;
+                    projectCards[2].style.transform = `translateX(${50 * (1 - easedProgress)}%) translateY(${-120 * (1 - Math.pow(easedProgress, 1.5))}%) rotate(${20 * (1 - easedProgress)}deg)`;
                     projectCards.forEach(p => p.style.opacity = opacity);
-
                 } else if (scrollY < projTop) {
-                    projectCards.forEach(p => { p.style.opacity = 0; }); // Hide before
+                    projectCards.forEach(p => p.style.opacity = 0);
                 } else {
-                    // Lock in final position
                     projectCards[0].style.transform = 'translate(0,0) rotate(0)';
                     projectCards[1].style.transform = 'translate(0,0)';
                     projectCards[2].style.transform = 'translate(0,0) rotate(0)';
-                    projectCards.forEach(p => { p.style.opacity = 1; });
+                    projectCards.forEach(p => p.style.opacity = 1);
                 }
             } else {
-                 // On mobile, just make them visible
                  projectCards.forEach(p => p.style.opacity = 1);
             }
-
-            // --- Leadership Staggered Animation (handled by Intersection Observer) ---
-            document.querySelectorAll('.leadership-card.visible').forEach((card, index) => {
-                card.style.transitionDelay = `${index * 150}ms`;
-            });
         }
         
-        window.addEventListener('scroll', handleAdvancedScroll);
+        window.addEventListener('scroll', handleAdvancedScroll, { passive: true });
         document.addEventListener('DOMContentLoaded', handleAdvancedScroll);
     </script>
 </body>
