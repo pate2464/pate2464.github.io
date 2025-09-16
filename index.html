@@ -49,6 +49,7 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
+            transition: transform 0.5s ease-out; /* For parallax */
         }
         
         /* Side Navigation */
@@ -207,6 +208,7 @@
             transform: translateY(20px);
             animation: fadeInUp 1s forwards;
         }
+        .hero h1 { animation-delay: 0.1s; }
         .hero h2 { animation-delay: 0.3s; }
         .hero p { animation-delay: 0.6s; }
         .hero .btn-container { animation-delay: 0.9s; }
@@ -306,6 +308,15 @@
             gap: 50px;
             align-items: center;
         }
+        .about-text h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        .about-text p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
         .about-image img {
             width: 100%;
             border-radius: 10px;
@@ -346,6 +357,12 @@
             transition: var(--transition);
         }
         .timeline-content:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .timeline-date {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        .timeline-title { font-size: 1.4rem; margin-bottom: 10px; }
         
         /* Projects Section */
         .projects-grid {
@@ -366,6 +383,12 @@
             box-shadow: 0 20px 30px rgba(0, 0, 0, 0.3);
             border-color: var(--primary);
         }
+        .project-content { padding: 20px; }
+        .project-title {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
         
         /* Leadership Section */
         .leadership-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
@@ -377,8 +400,19 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
         .leadership-card:hover { transform: translateY(-10px); box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2); border-color: var(--secondary); }
+        .leadership-icon {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
         
         /* Contact Section */
+        .contact-content {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
         .contact-info { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
         .contact-item { display: flex; align-items: center; gap: 15px; }
         .contact-icon {
@@ -430,23 +464,23 @@
 </head>
 <body>
     <div class="side-nav" id="side-nav">
-        <a href="#about" class="side-nav-link" data-section="about" data-section-name="About">
+        <a href="#about" class="side-nav-link" data-section="about">
             <span class="side-nav-tooltip">About</span>
             <div class="side-nav-dot"></div>
         </a>
-        <a href="#experience" class="side-nav-link" data-section="experience" data-section-name="Experience">
+        <a href="#experience" class="side-nav-link" data-section="experience">
             <span class="side-nav-tooltip">Experience</span>
             <div class="side-nav-dot"></div>
         </a>
-        <a href="#projects" class="side-nav-link" data-section="projects" data-section-name="Projects">
+        <a href="#projects" class="side-nav-link" data-section="projects">
             <span class="side-nav-tooltip">Projects</span>
             <div class="side-nav-dot"></div>
         </a>
-        <a href="#leadership" class="side-nav-link" data-section="leadership" data-section-name="Leadership">
+        <a href="#leadership" class="side-nav-link" data-section="leadership">
             <span class="side-nav-tooltip">Leadership</span>
             <div class="side-nav-dot"></div>
         </a>
-        <a href="#contact" class="side-nav-link" data-section="contact" data-section-name="Contact">
+        <a href="#contact" class="side-nav-link" data-section="contact">
             <span class="side-nav-tooltip">Contact</span>
             <div class="side-nav-dot"></div>
         </a>
@@ -480,25 +514,170 @@
         </div>
     </section>
 
-    <!-- Content sections -->
     <section id="about" class="about">
-        <!-- About Me content... -->
+        <div class="container">
+            <div class="section-title">
+                <h2>About Me</h2>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Computer Science Student at Purdue University</h3>
+                    <p>I'm a dedicated and passionate Computer Science student with expertise in data science, web development, and software engineering. I thrive on solving complex problems and creating innovative solutions through code.</p>
+                    <p>With experience in both academic research and industry internships, I've developed a strong foundation in Python, Java, SQL, and various data analytics tools. I'm constantly learning and expanding my skill set to stay at the forefront of technology.</p>
+                    <p>When I'm not coding, you can find me participating in case competitions, contributing to open-source projects, or mentoring fellow students in technology.</p>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Dhruv Patel">
+                </div>
+            </div>
+        </div>
     </section>
+
     <section id="experience" class="experience">
-        <!-- Professional Experience content... -->
+        <div class="container">
+            <div class="section-title">
+                <h2>Professional Experience</h2>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Jan 2025 - Present</div>
+                        <h3 class="timeline-title">Undergraduate Data Science Researcher</h3>
+                        <div class="timeline-company">The Data Mine (Allison Transmission) – Purdue University</div>
+                        <p class="timeline-desc">Collaborating with a team of 4 students for Allison transmission and working on warranty claim correlation. Developing a full stacked executable application coded in Python using Tkinter package.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Aug 2024 - Dec 2024</div>
+                        <h3 class="timeline-title">Undergraduate Data Science Researcher</h3>
+                        <div class="timeline-company">The Data Mine (Allison Transmission) – Purdue University</div>
+                        <p class="timeline-desc">Collaborated with a team of 9 students to develop a vehicle clustering model for Allison Transmission. Became proficient in Python/Geospatial packages (MovingPandas, OpenStreetMap, NetworkX) with regards to ML.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Sept 2023 - Nov 2023</div>
+                        <h3 class="timeline-title">Space Research Internship</h3>
+                        <div class="timeline-company">Galamad Aerospace (Singapore)</div>
+                        <p class="timeline-desc">Worked under the CTO to design, code, and research solar capabilities for a new satellite. Applied Python (Anaconda) and LaTeX for research documentation and technical analysis.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Web Development Intern</div>
+                        <h3 class="timeline-title">Oculotronics Technology Private Limited</h3>
+                        <p class="timeline-desc">Developed a new real-time back end by using MySQL(data management system), increasing firm efficiency and security. Gained hands-on experience in PhP, Java, and SQL.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
+
     <section id="projects" class="projects">
-        <!-- Projects content... -->
+        <div class="container">
+            <div class="section-title">
+                <h2>Projects</h2>
+            </div>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-content">
+                        <h3 class="project-title">Social Media Platform (Java)</h3>
+                        <p class="project-desc">Collaborated with a team of 4 members to develop a comprehensive social media application based on Java.</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-content">
+                        <h3 class="project-title">Warranty Correlation System</h3>
+                        <p class="project-desc">Developed a full-stack Python application using Tkinter for warranty claim analysis.</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-content">
+                        <h3 class="project-title">Vehicle Clustering Model</h3>
+                        <p class="project-desc">Developed a machine learning model for vehicle clustering using geospatial data.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
+
     <section id="leadership" class="leadership">
-        <!-- Leadership & Involvement content... -->
+        <div class="container">
+            <div class="section-title">
+                <h2>Leadership & Involvement</h2>
+            </div>
+            <div class="leadership-grid">
+                <div class="leadership-card">
+                    <div class="leadership-icon"><i class="fas fa-trophy"></i></div>
+                    <h3>Semifinalist in All India Melbourne Competition</h3>
+                    <p>Led a team in an All India case competition, proposing a digital marketing startup, ranked top 24 out of 250+ teams.</p>
+                </div>
+                <div class="leadership-card">
+                    <div class="leadership-icon"><i class="fas fa-anchor"></i></div>
+                    <h3>Leading Cadet: Sea Cadet Corps India</h3>
+                    <p>Trained as a seaman for the Indian Navy, leading a contingent of cadets, demonstrating strong discipline and leadership.</p>
+                </div>
+                <div class="leadership-card">
+                    <div class="leadership-icon"><i class="fas fa-globe"></i></div>
+                    <h3>Best Delegate: Model United Nations</h3>
+                    <p>Been part of the DISEC committee in MUN, assigned as the delegate of USA, recognized as the Best Delegate of the committee.</p>
+                </div>
+            </div>
+        </div>
     </section>
+
     <section id="contact" class="contact">
-        <!-- Get In Touch content... -->
+        <div class="container">
+            <div class="section-title">
+                <h2>Get In Touch</h2>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-phone"></i></div>
+                        <div class="contact-text">
+                            <h3>Phone</h3>
+                            <p>317-473-2799</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                        <div class="contact-text">
+                            <h3>Email</h3>
+                            <p><a href="mailto:pate2464@purdue.edu">pate2464@purdue.edu</a></p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fab fa-github"></i></div>
+                        <div class="contact-text">
+                            <h3>GitHub</h3>
+                            <p><a href="https://github.com/pate2464" target="_blank">github.com/pate2464</a></p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fab fa-linkedin"></i></div>
+                        <div class="contact-text">
+                            <h3>LinkedIn</h3>
+                            <p><a href="https://linkedin.com/in/dhruv-raj-patel/" target="_blank">linkedin.com/in/dhruv-raj-patel</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <footer>
-        <!-- Footer content... -->
+        <div class="container">
+            <ul class="footer-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#leadership">Leadership</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <p>&copy; 2023 Dhruv Patel. All Rights Reserved.</p>
+        </div>
     </footer>
 
     <script>
@@ -547,27 +726,31 @@
         const observerOptions = {
             root: null,
             rootMargin: '0px',
-            threshold: 0.3
+            threshold: 0.4 // Section is considered visible when 40% is in view
         };
 
         const sectionObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
+                const currentId = entry.target.id;
+                const correspondingNavLink = document.querySelector(`.side-nav-link[data-section="${currentId}"]`);
+                
                 if (entry.isIntersecting) {
                     entry.target.classList.add('is-visible');
                     // Update side-nav active state
-                    const currentId = entry.target.id;
-                    sideNavLinks.forEach(link => {
-                        link.classList.remove('active');
-                        if (link.dataset.section === currentId) {
-                            link.classList.add('active');
-                        }
-                    });
+                    if (correspondingNavLink) {
+                        sideNavLinks.forEach(link => link.classList.remove('active'));
+                        correspondingNavLink.classList.add('active');
+                    }
+                } else {
+                     entry.target.classList.remove('is-visible');
                 }
             });
         }, observerOptions);
 
         sections.forEach(section => {
-            sectionObserver.observe(section);
+            if (section.id !== 'hero') { // Don't observe the hero for the side blob animations
+                 sectionObserver.observe(section);
+            }
         });
         
         function handleScroll() {
@@ -581,31 +764,31 @@
             if (scrollY > heroSection.offsetHeight * 0.7) sideNav.classList.add('visible');
             else sideNav.classList.remove('visible');
 
-            // Parallax effect for sections
+            // Parallax effect for section content
             sections.forEach(section => {
                 const sectionTop = section.offsetTop;
                 const sectionHeight = section.offsetHeight;
                 if (scrollY > sectionTop - window.innerHeight && scrollY < sectionTop + sectionHeight) {
-                    const scrolled_in_section = scrollY - (sectionTop - window.innerHeight);
-                    const parallax_speed = 0.15;
-                    const parallax_element = section.querySelector('.container');
-                    if(parallax_element){
-                        parallax_element.style.transform = `translateY(${scrolled_in_section * parallax_speed - (window.innerHeight * parallax_speed)}px)`;
+                    const scrolledInSection = scrollY + window.innerHeight - sectionTop;
+                    const parallaxSpeed = 0.1;
+                    const parallaxOffset = (scrolledInSection - window.innerHeight / 2) * parallaxSpeed;
+                    const container = section.querySelector('.container');
+                    if (container) {
+                        container.style.transform = `translateY(${parallaxOffset}px)`;
                     }
                 }
             });
 
-            // Timeline animation (if observer is not preferred)
+            // Timeline animation
             timelineItems.forEach(item => {
-                const position = item.getBoundingClientRect().top;
-                const screenPosition = window.innerHeight / 1.3;
-                if (position < screenPosition) {
+                const itemTop = item.getBoundingClientRect().top;
+                if (itemTop < window.innerHeight * 0.75) {
                     item.classList.add('visible');
                 }
             });
         }
 
-        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', handleScroll, { passive: true }); // Improved scroll performance
         window.addEventListener('load', handleScroll); // Initial check on load
     </script>
 </body>
