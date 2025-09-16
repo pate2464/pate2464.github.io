@@ -132,7 +132,9 @@
         .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; width: 100%; max-width: 1200px; }
         .project-card {
             background: rgba(255, 255, 255, 0.05); border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.1);
-            transform-style: preserve-3d; transition: box-shadow 0.3s ease, transform 0.3s ease; opacity: 0;
+            transform-style: preserve-3d; opacity: 0;
+            /* FIX: Default transition is only for box-shadow, NOT transform */
+            transition: box-shadow 0.3s ease;
         }
         .project-card:hover { box-shadow: 0 20px 30px rgba(0, 0, 0, 0.3); border-color: var(--primary); }
         .project-content { padding: 25px; } .project-title { font-size: 1.4rem; color: var(--primary); }
@@ -318,10 +320,7 @@
         const experienceSection = document.getElementById('experience');
         const timelineItems = document.querySelectorAll('.timeline-item');
         const projectsSection = document.getElementById('projects');
-        const projectCard1 = document.getElementById('project-1');
-        const projectCard2 = document.getElementById('project-2');
-        const projectCard3 = document.getElementById('project-3');
-        const allProjectCards = [projectCard1, projectCard2, projectCard3];
+        const allProjectCards = document.querySelectorAll('.project-card');
         const leadershipCards = document.querySelectorAll('.leadership-card');
         let isProjectAnimationComplete = false;
         
@@ -355,7 +354,6 @@
                         target.style.transitionDelay = `${delay}ms`;
                     }
                 } else {
-                    // FIX: This makes the side blobs disappear when scrolling up
                     if (target.tagName === 'SECTION') {
                         target.classList.remove('is-visible');
                     }
@@ -400,21 +398,22 @@
                     const easedProgress = Math.pow(progress, 2);
                     const opacity = Math.min(1, progress * 4);
                     
-                    // FIX: Using the correct variables to apply styles
-                    projectCard1.style.transform = `translateX(${-50 * (1 - easedProgress)}%) translateY(${-120 * (1 - Math.pow(easedProgress, 1.5))}%) rotate(${-20 * (1 - easedProgress)}deg)`;
-                    projectCard2.style.transform = `translateY(${120 * (1 - easedProgress)}%)`;
-                    projectCard3.style.transform = `translateX(${50 * (1 - easedProgress)}%) translateY(${-120 * (1 - Math.pow(easedProgress, 1.5))}%) rotate(${20 * (1 - easedProgress)}deg)`;
-                    allProjectCards.forEach(p => { p.style.opacity = opacity; p.style.transition = 'opacity 0.2s linear'; });
+                    allProjectCards.forEach(p => { p.style.transition = 'opacity 0.2s linear'; p.style.opacity = opacity; });
+                    
+                    allProjectCards[0].style.transform = `translateX(${-50 * (1 - easedProgress)}%) translateY(${-120 * (1 - Math.pow(easedProgress, 1.5))}%) rotate(${-20 * (1 - easedProgress)}deg)`;
+                    allProjectCards[1].style.transform = `translateY(${120 * (1 - easedProgress)}%)`;
+                    allProjectCards[2].style.transform = `translateX(${50 * (1 - easedProgress)}%) translateY(${-120 * (1 - Math.pow(easedProgress, 1.5))}%) rotate(${20 * (1 - easedProgress)}deg)`;
+
                 } else if (scrollY < projTop) {
                     isProjectAnimationComplete = false;
                     allProjectCards.forEach(p => { p.style.opacity = 0; });
                 } else {
                     isProjectAnimationComplete = true;
-                    // Ensure final state transforms are non-interactive for tilt
-                    projectCard1.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
-                    projectCard2.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
-                    projectCard3.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
-                    allProjectCards.forEach(p => { p.style.opacity = 1; });
+                    allProjectCards.forEach(p => {
+                        p.style.opacity = 1;
+                        p.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+                        p.style.transition = 'box-shadow 0.3s ease, transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    });
                 }
             } else {
                  isProjectAnimationComplete = true;
