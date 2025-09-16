@@ -389,6 +389,9 @@
         const projectsSection = document.getElementById('projects');
         const allProjectCards = document.querySelectorAll('.project-card');
         const leadershipCards = document.querySelectorAll('.leadership-card');
+        const project1 = document.getElementById('project-1');
+        const project2 = document.getElementById('project-2');
+        const project3 = document.getElementById('project-3');
         
         // --- Project Card 3D Tilt Effect ---
         allProjectCards.forEach(card => {
@@ -439,36 +442,44 @@
                 });
             }
 
-            // Projects section parallax animation
+            // Projects section parallax animation - FIXED
             const projTop = projectsSection.offsetTop;
             const projHeight = projectsSection.offsetHeight;
             
             if (scrollY >= projTop && scrollY <= projTop + projHeight - wh) {
-                const scrollProgress = (scrollY - projTop) / (projHeight - wh);
+                const progress = (scrollY - projTop) / (projHeight - wh);
                 
-                // Animate project cards based on scroll progress
-                allProjectCards.forEach((card, index) => {
-                    const cardProgress = Math.min(1, Math.max(0, (scrollProgress - index * 0.2) / 0.6));
-                    if (cardProgress > 0) {
-                        card.classList.add('animate-in');
-                        card.style.opacity = cardProgress;
-                        card.style.transform = `translateY(${100 * (1 - cardProgress)}px) rotateX(${10 * (1 - cardProgress)}deg)`;
-                    }
-                });
+                // Creative paths for cards
+                const opacity = Math.min(1, progress * 4);
+                
+                // Card 1: Top-left curve
+                const p1x = -50 * (1 - progress);
+                const p1y = -120 * (1 - Math.pow(progress, 2));
+                const p1r = -20 * (1 - progress);
+                project1.style.transform = `translateX(${p1x}%) translateY(${p1y}%) rotate(${p1r}deg)`;
+                project1.style.opacity = opacity;
+
+                // Card 2: Bottom-up
+                const p2y = 120 * (1 - progress);
+                project2.style.transform = `translateY(${p2y}%)`;
+                project2.style.opacity = opacity;
+
+                // Card 3: Top-right curve
+                const p3x = 50 * (1 - progress);
+                const p3y = -120 * (1 - Math.pow(progress, 2));
+                const p3r = 20 * (1 - progress);
+                project3.style.transform = `translateX(${p3x}%) translateY(${p3y}%) rotate(${p3r}deg)`;
+                project3.style.opacity = opacity;
+
             } else if (scrollY < projTop) {
-                // Before reaching projects section
-                allProjectCards.forEach(card => {
-                    card.classList.remove('animate-in');
-                    card.style.opacity = 0;
-                    card.style.transform = 'translateY(100px) rotateX(10deg)';
-                });
+                // Reset if scrolled above
+                [project1, project2, project3].forEach(p => { p.style.opacity = 0; });
             } else {
-                // After scrolling through projects section
-                allProjectCards.forEach(card => {
-                    card.classList.add('animate-in');
-                    card.style.opacity = 1;
-                    card.style.transform = 'translateY(0) rotateX(0)';
-                });
+                // Lock in final position if scrolled past
+                project1.style.transform = 'translate(0,0) rotate(0)';
+                project2.style.transform = 'translate(0,0)';
+                project3.style.transform = 'translate(0,0) rotate(0)';
+                [project1, project2, project3].forEach(p => { p.style.opacity = 1; });
             }
 
             // Leadership section animation
