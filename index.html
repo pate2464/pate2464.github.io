@@ -111,22 +111,28 @@
         .about-content { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
         .about-image img { width: 100%; border-radius: 10px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); }
 
-        /* Experience Section (Compressive Timeline) */
-        .timeline { position: relative; max-width: 1200px; margin: 0 auto; --timeline-initial-gap: 150px; }
+        /* Experience Section with Stack Animation */
+        .timeline { position: relative; max-width: 1200px; margin: 0 auto; }
         .timeline:after { content: ''; position: absolute; width: 6px; background: linear-gradient(to bottom, var(--primary), var(--secondary)); top: 0; bottom: 0; left: 50%; margin-left: -3px; border-radius: 10px; }
         .timeline-item {
-            padding: 10px 40px; position: relative; width: 50%; opacity: 0;
-            transform: translateY(var(--timeline-initial-gap));
-            transition: opacity 0.6s ease-out, transform 0.8s cubic-bezier(0.2, 0.9, 0.3, 1);
+            padding: 10px 40px; position: relative; width: 50%; 
+            opacity: 0; transform: translateY(100px) scale(0.9);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .timeline-item.visible { opacity: 1; transform: translateY(0); }
-        .timeline-item:nth-child(odd) { left: 0; } .timeline-item:nth-child(even) { left: 50%; }
-        .timeline-content { padding: 20px 30px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 10px; border-left: 4px solid var(--primary); transition: transform 0.3s ease, box-shadow 0.3s ease; }
-        .timeline-content:hover { transform: scale(1.03); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .timeline-item.visible { opacity: 1; transform: translateY(0) scale(1); }
+        .timeline-item:nth-child(odd) { left: 0; } 
+        .timeline-item:nth-child(even) { left: 50%; }
+        .timeline-content { 
+            padding: 20px 30px; background: rgba(255, 255, 255, 0.05); 
+            backdrop-filter: blur(10px); border-radius: 10px; 
+            border-left: 4px solid var(--primary); 
+            transition: transform 0.3s ease, box-shadow 0.3s ease; 
+        }
+        .timeline-content:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 15px 25px rgba(0,0,0,0.2); }
         .timeline-date { font-weight: 600; color: var(--primary); margin-bottom: 10px; }
         .timeline-title { font-size: 1.4rem; margin-bottom: 10px; }
         
-        /* Projects Section (Fixed Parallax Animation) */
+        /* Projects Section with Fixed Parallax */
         #projects { padding: 0; height: 300vh; position: relative; }
         .projects-sticky-container { 
             height: 100vh; width: 100%; 
@@ -149,24 +155,29 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             transform-style: preserve-3d; 
             opacity: 0;
-            transform: translateY(100px);
-            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
-                        opacity 0.8s ease,
+            transform: translateY(100px) rotateX(45deg) scale(0.8);
+            transition: transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                        opacity 1.2s ease,
                         box-shadow 0.3s ease;
             pointer-events: none;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
         }
         .project-card.animate-in {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) rotateX(0) scale(1);
             pointer-events: auto;
         }
         .project-card:hover { 
-            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.3); 
+            box-shadow: 0 30px 60px rgba(37, 99, 235, 0.3); 
             border-color: var(--primary); 
-            transform: translateY(-10px) rotate3d(1, 1, 1, 5deg);
+            transform: translateY(-15px) rotate3d(1, 0, 0, 5deg) scale(1.03);
         }
         .project-content { padding: 25px; } 
-        .project-title { font-size: 1.4rem; color: var(--primary); }
+        .project-title { font-size: 1.4rem; color: var(--primary); margin-bottom: 15px; }
+        .project-desc { margin-bottom: 20px; }
+        .project-features { list-style-type: none; }
+        .project-features li { margin-bottom: 8px; position: relative; padding-left: 20px; }
+        .project-features li:before { content: "▹"; position: absolute; left: 0; color: var(--primary); }
         
         /* Leadership Section (Staggered Animation) */
         .leadership-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
@@ -208,7 +219,7 @@
             .projects-grid { grid-template-columns: 1fr; gap: 20px; padding: 0 20px; }
             #projects { height: auto; padding: 120px 0; }
             .projects-sticky-container { height: auto; position: static; }
-            .project-card { opacity: 1; transform: translateY(0); pointer-events: auto; }
+            .project-card { opacity: 1; transform: translateY(0) rotateX(0) scale(1); pointer-events: auto; }
         }
         @media (max-width: 768px) {
             .nav-links { position: fixed; top: 70px; left: -100%; width: 100%; height: calc(100vh - 70px); background: var(--dark); flex-direction: column; align-items: center; justify-content: center; transition: var(--transition); }
@@ -300,9 +311,39 @@
         <div class="projects-sticky-container">
             <div class="section-title"><h2>Projects</h2></div>
             <div class="projects-grid">
-                <div id="project-1" class="project-card"><div class="project-content"><h3 class="project-title">Social Media Platform (Java)</h3><p>Collaborated with a team of 4 members to develop a comprehensive social media application based on Java.</p></div></div>
-                <div id="project-2" class="project-card"><div class="project-content"><h3 class="project-title">Warranty Correlation System</h3><p>Developed a full-stack Python application using Tkinter for warranty claim analysis and statistical trend finding.</p></div></div>
-                <div id="project-3" class="project-card"><div class="project-content"><h3 class="project-title">Vehicle Clustering Model</h3><p>Developed a machine learning model for vehicle clustering using geospatial data with MovingPandas and NetworkX.</p></div></div>
+                <div id="project-1" class="project-card">
+                    <div class="project-content">
+                        <h3 class="project-title">Social Media Platform (Java)</h3>
+                        <p class="project-desc">Collaborated with a team of 4 members to develop a comprehensive social media application based on Java.</p>
+                        <ul class="project-features">
+                            <li>Designed and managed the backend database using SQLite</li>
+                            <li>Implemented user authentication and message exchange</li>
+                            <li>Created intuitive UI with Swing framework</li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="project-2" class="project-card">
+                    <div class="project-content">
+                        <h3 class="project-title">Warranty Correlation System</h3>
+                        <p class="project-desc">Developed a full-stack Python application using Tkinter for warranty claim analysis and statistical trend finding.</p>
+                        <ul class="project-features">
+                            <li>Employed advanced data analytics to find statistical trends</li>
+                            <li>Improved claims processing efficiency</li>
+                            <li>Collaborated with a team of 4 researchers</li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="project-3" class="project-card">
+                    <div class="project-content">
+                        <h3 class="project-title">Vehicle Clustering Model</h3>
+                        <p class="project-desc">Developed a machine learning model for vehicle clustering using geospatial data with MovingPandas and NetworkX.</p>
+                        <ul class="project-features">
+                            <li>Utilized MovingPandas, OpenStreetMap, and NetworkX</li>
+                            <li>Conducted data analysis and feature engineering</li>
+                            <li>Created iterative script for outlier detection</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -358,7 +399,7 @@
         const leadershipCards = document.querySelectorAll('.leadership-card');
         let isProjectAnimationComplete = false;
         
-        // --- Project Card 3D Tilt Effect (with glitch fix) ---
+        // --- Project Card 3D Tilt Effect ---
         allProjectCards.forEach(card => {
             card.addEventListener('mousemove', function(e) {
                 if (!isProjectAnimationComplete) return;
@@ -411,15 +452,16 @@
             });
             sideNavLinks.forEach(link => link.classList.toggle('active', link.dataset.section === currentSectionId));
 
+            // Experience Section Stack Animation
             const expTop = experienceSection.offsetTop;
             const expHeight = experienceSection.offsetHeight;
             if (scrollY > expTop - wh && scrollY < expTop + expHeight) {
                 const scrollProgress = Math.max(0, Math.min(1, (scrollY - (expTop - wh * 0.8)) / (expHeight * 0.6)));
+                
                 timelineItems.forEach((item, index) => {
-                    if (scrollProgress > index * 0.2) item.classList.add('visible');
-                    const compressionStart = 0.4;
-                    const compressionFactor = Math.max(0, (scrollProgress - compressionStart) / (1 - compressionStart));
-                    item.style.setProperty('--timeline-initial-gap', `${150 - (150 * compressionFactor)}px`);
+                    if (scrollProgress > index * 0.2) {
+                        item.classList.add('visible');
+                    }
                 });
             }
 
@@ -432,19 +474,23 @@
                 const progress = (scrollY - projTop) / projScrollDuration;
                 
                 // Animate project cards based on scroll progress
-                if (progress < 0.3) {
+                if (progress < 0.2) {
                     // Initial state - cards are hidden
                     allProjectCards.forEach(card => {
                         card.classList.remove('animate-in');
                     });
                     isProjectAnimationComplete = false;
-                } else if (progress >= 0.3 && progress < 0.7) {
-                    // Animate cards in
-                    const animationProgress = (progress - 0.3) / 0.4; // Normalize to 0-1
+                } else if (progress >= 0.2 && progress < 0.8) {
+                    // Animate cards in with staggered delays
+                    const animationProgress = (progress - 0.2) / 0.6; // Normalize to 0-1
                     
                     allProjectCards.forEach((card, index) => {
-                        card.classList.add('animate-in');
-                        card.style.transitionDelay = `${index * 0.2}s`;
+                        const cardProgress = Math.min(1, Math.max(0, animationProgress - (index * 0.2)));
+                        if (cardProgress > 0) {
+                            card.classList.add('animate-in');
+                            card.style.opacity = cardProgress;
+                            card.style.transform = `translateY(${100 * (1 - cardProgress)}px) rotateX(${45 * (1 - cardProgress)}deg) scale(${0.8 + (0.2 * cardProgress)})`;
+                        }
                     });
                     
                     isProjectAnimationComplete = false;
@@ -452,6 +498,8 @@
                     // Animation complete
                     allProjectCards.forEach(card => {
                         card.classList.add('animate-in');
+                        card.style.opacity = 1;
+                        card.style.transform = 'translateY(0) rotateX(0) scale(1)';
                     });
                     isProjectAnimationComplete = true;
                 }
@@ -459,19 +507,33 @@
                 // Before reaching projects section
                 allProjectCards.forEach(card => {
                     card.classList.remove('animate-in');
+                    card.style.opacity = 0;
+                    card.style.transform = 'translateY(100px) rotateX(45deg) scale(0.8)';
                 });
                 isProjectAnimationComplete = false;
             } else {
                 // After scrolling through projects section
                 allProjectCards.forEach(card => {
                     card.classList.add('animate-in');
+                    card.style.opacity = 1;
+                    card.style.transform = 'translateY(0) rotateX(0) scale(1)';
                 });
                 isProjectAnimationComplete = true;
             }
         }
         
         window.addEventListener('scroll', handleAdvancedScroll, { passive: true });
-        document.addEventListener('DOMContentLoaded', handleAdvancedScroll);
+        window.addEventListener('load', handleAdvancedScroll);
+        
+        // Mobile menu toggle
+        const menuBtn = document.querySelector('.menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+        
+        if (menuBtn && navLinks) {
+            menuBtn.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+        }
     </script>
 </body>
 </html>
