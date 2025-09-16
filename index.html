@@ -126,18 +126,47 @@
         .timeline-date { font-weight: 600; color: var(--primary); margin-bottom: 10px; }
         .timeline-title { font-size: 1.4rem; margin-bottom: 10px; }
         
-        /* Projects Section (Scroll-Pinned Animation) */
-        #projects { padding: 0; height: 220vh; /* Reduced parallax length */ }
-        .projects-sticky-container { height: 100vh; width: 100%; position: sticky; top: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; width: 100%; max-width: 1200px; }
-        .project-card {
-            background: rgba(255, 255, 255, 0.05); border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.1);
-            transform-style: preserve-3d; opacity: 0;
-            /* FIX: Default transition doesn't include transform to prevent conflict */
-            transition: box-shadow 0.3s ease;
+        /* Projects Section (Fixed Parallax Animation) */
+        #projects { padding: 0; height: 300vh; position: relative; }
+        .projects-sticky-container { 
+            height: 100vh; width: 100%; 
+            position: sticky; top: 0; 
+            display: flex; flex-direction: column; 
+            justify-content: center; align-items: center;
+            overflow: hidden;
         }
-        .project-card:hover { box-shadow: 0 20px 30px rgba(0, 0, 0, 0.3); border-color: var(--primary); }
-        .project-content { padding: 25px; } .project-title { font-size: 1.4rem; color: var(--primary); }
+        .projects-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 30px; 
+            width: 100%; 
+            max-width: 1200px;
+            position: relative;
+        }
+        .project-card {
+            background: rgba(255, 255, 255, 0.05); 
+            border-radius: 15px; 
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform-style: preserve-3d; 
+            opacity: 0;
+            transform: translateY(100px);
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                        opacity 0.8s ease,
+                        box-shadow 0.3s ease;
+            pointer-events: none;
+        }
+        .project-card.animate-in {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        .project-card:hover { 
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.3); 
+            border-color: var(--primary); 
+            transform: translateY(-10px) rotate3d(1, 1, 1, 5deg);
+        }
+        .project-content { padding: 25px; } 
+        .project-title { font-size: 1.4rem; color: var(--primary); }
         
         /* Leadership Section (Staggered Animation) */
         .leadership-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
@@ -166,7 +195,10 @@
         .footer-links a:hover { color: var(--primary); }
         
         /* Media Queries */
-        @media (max-width: 1200px) { .hero .container { flex-direction: column; text-align: center; } .cube-container { display: none; } }
+        @media (max-width: 1200px) { 
+            .hero .container { flex-direction: column; text-align: center; } 
+            .cube-container { display: none; } 
+        }
         @media (max-width: 992px) {
             .side-nav { display: none; }
             .about-content { grid-template-columns: 1fr; }
@@ -176,12 +208,14 @@
             .projects-grid { grid-template-columns: 1fr; gap: 20px; padding: 0 20px; }
             #projects { height: auto; padding: 120px 0; }
             .projects-sticky-container { height: auto; position: static; }
+            .project-card { opacity: 1; transform: translateY(0); pointer-events: auto; }
         }
         @media (max-width: 768px) {
             .nav-links { position: fixed; top: 70px; left: -100%; width: 100%; height: calc(100vh - 70px); background: var(--dark); flex-direction: column; align-items: center; justify-content: center; transition: var(--transition); }
             .nav-links.active { left: 0; }
             .nav-links li { margin: 15px 0; }
-            .menu-btn { display: block; } .hero h1 { font-size: 2.5rem; }
+            .menu-btn { display: block; } 
+            .hero h1 { font-size: 2.5rem; }
             .btn { display: block; margin-bottom: 15px; text-align: center; }
             .btn-outline { margin-left: 0; }
         }
@@ -389,39 +423,50 @@
                 });
             }
 
-            if (window.innerWidth > 992) {
-                const projTop = projectsSection.offsetTop;
-                const projScrollDuration = projectsSection.offsetHeight - wh;
-                if (scrollY >= projTop && scrollY <= projTop + projScrollDuration) {
+            // Fixed Projects Section Animation
+            const projTop = projectsSection.offsetTop;
+            const projHeight = projectsSection.offsetHeight;
+            const projScrollDuration = projHeight - wh;
+            
+            if (scrollY >= projTop && scrollY <= projTop + projScrollDuration) {
+                const progress = (scrollY - projTop) / projScrollDuration;
+                
+                // Animate project cards based on scroll progress
+                if (progress < 0.3) {
+                    // Initial state - cards are hidden
+                    allProjectCards.forEach(card => {
+                        card.classList.remove('animate-in');
+                    });
                     isProjectAnimationComplete = false;
-                    const progress = (scrollY - projTop) / projScrollDuration;
-                    const easedProgress = Math.pow(progress, 2);
-                    const opacity = Math.min(1, progress * 4);
+                } else if (progress >= 0.3 && progress < 0.7) {
+                    // Animate cards in
+                    const animationProgress = (progress - 0.3) / 0.4; // Normalize to 0-1
                     
-                    allProjectCards.forEach(p => {
-                        p.style.transition = 'none'; // FIX: Remove transition during scroll animation
-                        p.style.opacity = opacity;
+                    allProjectCards.forEach((card, index) => {
+                        card.classList.add('animate-in');
+                        card.style.transitionDelay = `${index * 0.2}s`;
                     });
                     
-                    allProjectCards[0].style.transform = `translateX(${-50 * (1 - easedProgress)}%) translateY(${-120 * (1 - Math.pow(easedProgress, 1.5))}%) rotate(${-20 * (1 - easedProgress)}deg)`;
-                    allProjectCards[1].style.transform = `translateY(${120 * (1 - easedProgress)}%)`;
-                    allProjectCards[2].style.transform = `translateX(${50 * (1 - easedProgress)}%) translateY(${-120 * (1 - Math.pow(easedProgress, 1.5))}%) rotate(${20 * (1 - easedProgress)}deg)`;
-
-                } else if (scrollY < projTop) {
                     isProjectAnimationComplete = false;
-                    allProjectCards.forEach(p => { p.style.opacity = 0; });
                 } else {
-                    isProjectAnimationComplete = true;
-                    allProjectCards.forEach(p => {
-                        p.style.opacity = 1;
-                        p.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
-                        // FIX: Restore transition for hover effect
-                        p.style.transition = 'box-shadow 0.3s ease, transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    // Animation complete
+                    allProjectCards.forEach(card => {
+                        card.classList.add('animate-in');
                     });
+                    isProjectAnimationComplete = true;
                 }
+            } else if (scrollY < projTop) {
+                // Before reaching projects section
+                allProjectCards.forEach(card => {
+                    card.classList.remove('animate-in');
+                });
+                isProjectAnimationComplete = false;
             } else {
-                 isProjectAnimationComplete = true;
-                 allProjectCards.forEach(p => p.style.opacity = 1);
+                // After scrolling through projects section
+                allProjectCards.forEach(card => {
+                    card.classList.add('animate-in');
+                });
+                isProjectAnimationComplete = true;
             }
         }
         
