@@ -31,7 +31,7 @@
         h1, h2, h3, h4, h5 { font-family: 'Raleway', sans-serif; font-weight: 700; margin-bottom: 1.5rem; letter-spacing: 1px; }
         .container { width: 90%; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
-        /* Side Navigation - RESTORED */
+        /* Side Navigation */
         .side-nav {
             position: fixed; top: 50%; right: 30px; transform: translateY(-50%);
             z-index: 1001; display: flex; flex-direction: column; gap: 15px;
@@ -94,7 +94,7 @@
         .section-title h2 { font-size: 2.5rem; position: relative; display: inline-block; padding-bottom: 15px; }
         .section-title h2:after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 80px; height: 3px; background: linear-gradient(to right, var(--primary), var(--secondary)); }
 
-        /* Decorative Side Blobs - RESTORED */
+        /* Decorative Side Blobs */
         @media (min-width: 1400px) {
             section::before, section::after {
                 content: ''; position: absolute; top: 50%; width: 200px; height: 200px;
@@ -127,12 +127,12 @@
         .timeline-title { font-size: 1.4rem; margin-bottom: 10px; }
         
         /* Projects Section (Scroll-Pinned Animation) */
-        #projects { padding: 0; height: 300vh; }
+        #projects { padding: 0; height: 220vh; /* Reduced parallax length */ }
         .projects-sticky-container { height: 100vh; width: 100%; position: sticky; top: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; width: 100%; max-width: 1200px; }
         .project-card {
             background: rgba(255, 255, 255, 0.05); border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.1);
-            transform-style: preserve-3d; transition: box-shadow 0.3s ease; opacity: 0;
+            transform-style: preserve-3d; transition: box-shadow 0.3s ease, transform 0.3s ease; opacity: 0;
         }
         .project-card:hover { box-shadow: 0 20px 30px rgba(0, 0, 0, 0.3); border-color: var(--primary); }
         .project-content { padding: 25px; } .project-title { font-size: 1.4rem; color: var(--primary); }
@@ -264,9 +264,9 @@
         <div class="projects-sticky-container">
             <div class="section-title"><h2>Projects</h2></div>
             <div class="projects-grid">
-                <div class="project-card"><div class="project-content"><h3 class="project-title">Social Media Platform (Java)</h3><p>Collaborated with a team of 4 members to develop a comprehensive social media application based on Java.</p></div></div>
-                <div class="project-card"><div class="project-content"><h3 class="project-title">Warranty Correlation System</h3><p>Developed a full-stack Python application using Tkinter for warranty claim analysis and statistical trend finding.</p></div></div>
-                <div class="project-card"><div class="project-content"><h3 class="project-title">Vehicle Clustering Model</h3><p>Developed a machine learning model for vehicle clustering using geospatial data with MovingPandas and NetworkX.</p></div></div>
+                <div id="project-1" class="project-card"><div class="project-content"><h3 class="project-title">Social Media Platform (Java)</h3><p>Collaborated with a team of 4 members to develop a comprehensive social media application based on Java.</p></div></div>
+                <div id="project-2" class="project-card"><div class="project-content"><h3 class="project-title">Warranty Correlation System</h3><p>Developed a full-stack Python application using Tkinter for warranty claim analysis and statistical trend finding.</p></div></div>
+                <div id="project-3" class="project-card"><div class="project-content"><h3 class="project-title">Vehicle Clustering Model</h3><p>Developed a machine learning model for vehicle clustering using geospatial data with MovingPandas and NetworkX.</p></div></div>
             </div>
         </div>
     </section>
@@ -314,24 +314,31 @@
         const heroSection = document.getElementById('hero');
         const sideNav = document.getElementById('side-nav');
         const sideNavLinks = document.querySelectorAll('.side-nav-link');
-        const sections = document.querySelectorAll('section');
+        const allSections = document.querySelectorAll('section');
         const experienceSection = document.getElementById('experience');
         const timelineItems = document.querySelectorAll('.timeline-item');
         const projectsSection = document.getElementById('projects');
-        const projectCards = document.querySelectorAll('.project-card');
-        const leadershipCards = document.querySelectorAll('.leadership-card');
+        const projectCard1 = document.getElementById('project-1');
+        const projectCard2 = document.getElementById('project-2');
+        const projectCard3 = document.getElementById('project-3');
+        const allProjectCards = [projectCard1, projectCard2, projectCard3];
+        let isProjectAnimationComplete = false;
         
-        // --- Project Card 3D Tilt Effect ---
-        projectCards.forEach(card => {
+        // --- Project Card 3D Tilt Effect (with glitch fix) ---
+        allProjectCards.forEach(card => {
             card.addEventListener('mousemove', function(e) {
+                if (!isProjectAnimationComplete) return; // FIX: Disable hover during animation
                 const rect = this.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
                 const rotateY = -1/20 * (x - rect.width / 2);
                 const rotateX = 1/20 * (y - rect.height / 2);
+                this.style.transition = 'transform 0.1s linear'; // Make tilt responsive
                 this.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
             });
             card.addEventListener('mouseout', function() {
+                if (!isProjectAnimationComplete) return;
+                this.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)'; // Smooth return
                 this.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
             });
         });
@@ -344,7 +351,8 @@
                     target.classList.add('is-visible');
                     // Stagger leadership cards
                     if (target.classList.contains('leadership-card')) {
-                        const delay = Array.from(leadershipCards).indexOf(target) * 150;
+                        const allLeadershipCards = document.querySelectorAll('.leadership-card');
+                        const delay = Array.from(allLeadershipCards).indexOf(target) * 150;
                         target.style.transitionDelay = `${delay}ms`;
                     }
                 }
@@ -361,20 +369,15 @@
             // Navbar scroll effect
             navbar.classList.toggle('scrolled', scrollY > 50);
 
-            // Side Nav visibility
+            // Side Nav visibility & Active State
             sideNav.classList.toggle('visible', scrollY > heroSection.offsetHeight * 0.7);
-
-            // Side Nav active state
-            let currentSection = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                if (scrollY >= sectionTop - wh / 2) {
-                    currentSection = section.id;
+            let currentSectionId = '';
+            allSections.forEach(section => {
+                if (scrollY >= section.offsetTop - wh / 2) {
+                    currentSectionId = section.id;
                 }
             });
-            sideNavLinks.forEach(link => {
-                link.classList.toggle('active', link.dataset.section === currentSection);
-            });
+            sideNavLinks.forEach(link => link.classList.toggle('active', link.dataset.section === currentSectionId));
 
             // --- Experience Section Compressing Timeline ---
             const expTop = experienceSection.offsetTop;
@@ -390,28 +393,32 @@
             }
 
             // --- Projects Section Pinning Animation ---
-            if (window.innerWidth > 992) { // Only run this complex animation on desktop
+            if (window.innerWidth > 992) {
                 const projTop = projectsSection.offsetTop;
                 const projScrollDuration = projectsSection.offsetHeight - wh;
                 if (scrollY >= projTop && scrollY <= projTop + projScrollDuration) {
+                    isProjectAnimationComplete = false; // Disable tilt
                     const progress = (scrollY - projTop) / projScrollDuration;
                     const easedProgress = Math.pow(progress, 2);
                     const opacity = Math.min(1, progress * 4);
                     
-                    projectCards[0].style.transform = `translateX(${-50 * (1 - easedProgress)}%) translateY(${-120 * (1 - Math.pow(easedProgress, 1.5))}%) rotate(${-20 * (1 - easedProgress)}deg)`;
-                    projectCards[1].style.transform = `translateY(${120 * (1 - easedProgress)}%)`;
-                    projectCards[2].style.transform = `translateX(${50 * (1 - easedProgress)}%) translateY(${-120 * (1 - Math.pow(easedProgress, 1.5))}%) rotate(${20 * (1 - easedProgress)}deg)`;
-                    projectCards.forEach(p => p.style.opacity = opacity);
+                    projectCard1.style.transform = `translateX(${-50 * (1 - easedProgress)}%) translateY(${-120 * (1 - Math.pow(easedProgress, 1.5))}%) rotate(${-20 * (1 - easedProgress)}deg)`;
+                    projectCard2.style.transform = `translateY(${120 * (1 - easedProgress)}%)`;
+                    projectCard3.style.transform = `translateX(${50 * (1 - easedProgress)}%) translateY(${-120 * (1 - Math.pow(easedProgress, 1.5))}%) rotate(${20 * (1 - easedProgress)}deg)`;
+                    allProjectCards.forEach(p => { p.style.opacity = opacity; p.style.transition = 'opacity 0.2s linear'; });
                 } else if (scrollY < projTop) {
-                    projectCards.forEach(p => p.style.opacity = 0);
+                    isProjectAnimationComplete = false; // Disable tilt
+                    allProjectCards.forEach(p => { p.style.opacity = 0; });
                 } else {
-                    projectCards[0].style.transform = 'translate(0,0) rotate(0)';
-                    projectCards[1].style.transform = 'translate(0,0)';
-                    projectCards[2].style.transform = 'translate(0,0) rotate(0)';
-                    projectCards.forEach(p => p.style.opacity = 1);
+                    isProjectAnimationComplete = true; // RE-ENABLE tilt
+                    projectCard1.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+                    projectCard2.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+                    projectCard3.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+                    allProjectCards.forEach(p => { p.style.opacity = 1; });
                 }
             } else {
-                 projectCards.forEach(p => p.style.opacity = 1);
+                 isProjectAnimationComplete = true; // Always enable tilt on mobile
+                 allProjectCards.forEach(p => p.style.opacity = 1);
             }
         }
         
